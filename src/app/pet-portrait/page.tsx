@@ -39,6 +39,11 @@ export default function PetPortraitPage() {
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
     if (file) {
+      // Check file size (max 4MB for Vercel)
+      if (file.size > 4 * 1024 * 1024) {
+        toast.error("Image too large! Please use an image under 4MB.");
+        return;
+      }
       setUploadedFile(file);
       const reader = new FileReader();
       reader.onload = () => setUploadedImage(reader.result as string);
@@ -47,7 +52,18 @@ export default function PetPortraitPage() {
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop, accept: { "image/*": [] }, maxFiles: 1,
+    onDrop, 
+    accept: { "image/*": [".jpg", ".jpeg", ".png", ".webp"] }, 
+    maxFiles: 1,
+    maxSize: 4 * 1024 * 1024, // 4MB
+    onDropRejected: (rejections) => {
+      const error = rejections[0]?.errors[0];
+      if (error?.code === "file-too-large") {
+        toast.error("Image too large! Max 4MB allowed.");
+      } else {
+        toast.error(error?.message || "Invalid file");
+      }
+    },
   });
 
   const handleGenerate = async () => {
@@ -63,11 +79,20 @@ export default function PetPortraitPage() {
       formData.append("style", selectedStyle);
 
       const res = await fetch("/api/pet-portrait", { method: "POST", body: formData });
+      
+      // Handle non-JSON responses (e.g., "Request Entity Too Large")
+      const contentType = res.headers.get("content-type");
+      if (!contentType?.includes("application/json")) {
+        const text = await res.text();
+        console.error("Non-JSON response:", text);
+        throw new Error(text.includes("Too Large") ? "Image too large! Please use a smaller image." : `Server error: ${text.substring(0, 100)}`);
+      }
+      
       const data = await res.json();
       clearInterval(interval);
       
       if (!res.ok) {
-        throw new Error(data.error || "Failed to generate portrait");
+        throw new Error(data.error || data.details || "Failed to generate portrait");
       }
       
       if (data.success && data.images && data.images.length > 0) {
@@ -84,7 +109,7 @@ export default function PetPortraitPage() {
           throw new Error("No valid images generated");
         }
       } else {
-        throw new Error(data.error || "Generation failed");
+        throw new Error(data.error || data.details || "Generation failed");
       }
     } catch (e) {
       console.error("Generation error:", e);
