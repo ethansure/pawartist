@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getReplicateClient, fileToDataUrl, demoImages, runModel, models } from "@/lib/replicate";
+import { createLogger, withLogging } from "@/lib/logger";
 
 export const maxDuration = 120;
 
@@ -19,6 +20,8 @@ const stylePrompts: Record<string, string> = {
 };
 
 export async function POST(request: NextRequest) {
+  const logger = createLogger("style-transfer");
+  
   try {
     const formData = await request.formData();
     const image = formData.get("image") as File;
@@ -28,41 +31,79 @@ export async function POST(request: NextRequest) {
     
     const stylePrompt = customPrompt || stylePrompts[style] || "artistic transformation";
 
+    logger.start({
+      imageSize: image?.size,
+      imageType: image?.type,
+      style,
+      strength,
+      hasCustomPrompt: !!customPrompt,
+    });
+
     if (!image || !style) {
-      return NextResponse.json(
-        { error: "Missing image or style" },
-        { status: 400 }
-      );
+      logger.warn("validation_failed", { hasImage: !!image, hasStyle: !!style });
+      return NextResponse.json({ error: "Missing image or style" }, { status: 400 });
     }
 
     const replicate = getReplicateClient();
 
     if (replicate) {
-      const dataUrl = await fileToDataUrl(image);
+      logger.info("replicate_configured");
+      
+      const dataUrl = await withLogging(logger, "file_to_dataurl", () =>
+        fileToDataUrl(image)
+      );
+      
       const enhancedPrompt = `Transform this image ${stylePrompt}, artistic masterpiece, highly detailed, professional quality`;
       
-      const output = await runModel(replicate, models.sdxl, {
-        prompt: enhancedPrompt,
-        image: dataUrl,
-        num_outputs: 1,
-        guidance_scale: 7.5,
-        prompt_strength: strength,
-        num_inference_steps: 40,
-        scheduler: "K_EULER",
+      logger.info("calling_sdxl", { 
+        model: "sdxl", 
+        prompt: enhancedPrompt.substring(0, 100),
+        strength,
       });
+      
+      const output = await withLogging(logger, "replicate_api", () =>
+        runModel(replicate, models.sdxl, {
+          prompt: enhancedPrompt,
+          image: dataUrl,
+          num_outputs: 1,
+          guidance_scale: 7.5,
+          prompt_strength: strength,
+          num_inference_steps: 40,
+          scheduler: "K_EULER",
+        })
+      );
 
       const images = Array.isArray(output) ? output : [output];
+      const validImages = images.filter((img): img is string => 
+        typeof img === "string" && img.startsWith("http")
+      );
+
+      logger.info("output_received", {
+        totalImages: images.length,
+        validImages: validImages.length,
+        sampleUrl: validImages[0]?.substring(0, 80),
+      });
+
+      if (validImages.length === 0) {
+        logger.error("no_valid_images", new Error("No valid image URLs"), {
+          rawOutput: JSON.stringify(output).substring(0, 200),
+        });
+        return NextResponse.json({ error: "No valid images generated" }, { status: 500 });
+      }
+
+      logger.end(true);
       
       return NextResponse.json({
         success: true,
-        image: images[0],
+        image: validImages[0],
         style,
         strength,
       });
     } else {
-      // Demo mode
-      console.log("Demo mode: Style transfer");
+      logger.info("demo_mode");
       await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      logger.end(true, { demo: true });
 
       return NextResponse.json({
         success: true,
@@ -73,10 +114,10 @@ export async function POST(request: NextRequest) {
       });
     }
   } catch (error) {
-    console.error("Style transfer error:", error);
-    return NextResponse.json(
-      { error: "Failed to apply style" },
-      { status: 500 }
-    );
+    logger.error("request_failed", error as Error);
+    return NextResponse.json({ 
+      error: "Failed to apply style",
+      details: error instanceof Error ? error.message : "Unknown error"
+    }, { status: 500 });
   }
 }
