@@ -2,17 +2,165 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #fefcf9;
-  --foreground: #1a1a1a;
-  --primary: #f59e0b;
-  --primary-foreground: #ffffff;
-  --secondary: #fef3c7;
-  --accent: #d97706;
+@layer base {
+  :root {
+    --background: 36 100% 99%;
+    --foreground: 20 14% 4%;
+    --card: 36 100% 98%;
+    --card-foreground: 20 14% 4%;
+    --popover: 36 100% 99%;
+    --popover-foreground: 20 14% 4%;
+    --primary: 25 95% 53%;
+    --primary-foreground: 60 9% 98%;
+    --secondary: 36 33% 90%;
+    --secondary-foreground: 20 14% 4%;
+    --muted: 36 33% 95%;
+    --muted-foreground: 20 14% 46%;
+    --accent: 25 95% 53%;
+    --accent-foreground: 60 9% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 60 9% 98%;
+    --border: 30 20% 88%;
+    --input: 30 20% 88%;
+    --ring: 25 95% 53%;
+    --radius: 0.75rem;
+    --chart-1: 25 95% 53%;
+    --chart-2: 30 80% 55%;
+    --chart-3: 35 70% 50%;
+    --chart-4: 20 60% 45%;
+    --chart-5: 15 50% 40%;
+  }
+
+  .dark {
+    --background: 20 14% 4%;
+    --foreground: 36 100% 99%;
+    --card: 20 14% 8%;
+    --card-foreground: 36 100% 99%;
+    --popover: 20 14% 8%;
+    --popover-foreground: 36 100% 99%;
+    --primary: 25 95% 53%;
+    --primary-foreground: 60 9% 98%;
+    --secondary: 20 14% 14%;
+    --secondary-foreground: 36 100% 99%;
+    --muted: 20 14% 14%;
+    --muted-foreground: 36 33% 70%;
+    --accent: 25 95% 53%;
+    --accent-foreground: 60 9% 98%;
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 60 9% 98%;
+    --border: 20 14% 14%;
+    --input: 20 14% 14%;
+    --ring: 25 95% 53%;
+  }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: system-ui, -apple-system, sans-serif;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Custom animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 5px hsl(var(--primary) / 0.5); }
+  50% { box-shadow: 0 0 20px hsl(var(--primary) / 0.8); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    hsl(var(--primary) / 0.1) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Gradient backgrounds */
+.gradient-hero {
+  background: linear-gradient(
+    135deg,
+    hsl(36 100% 99%) 0%,
+    hsl(30 100% 95%) 50%,
+    hsl(25 100% 92%) 100%
+  );
+}
+
+.gradient-accent {
+  background: linear-gradient(
+    135deg,
+    hsl(25 95% 53%) 0%,
+    hsl(30 90% 55%) 100%
+  );
+}
+
+/* Glass effect */
+.glass {
+  backdrop-filter: blur(16px) saturate(180%);
+  background-color: hsl(var(--background) / 0.75);
+  border: 1px solid hsl(var(--border) / 0.5);
+}
+
+/* Style card hover effects */
+.style-card {
+  transition: all 0.3s ease;
+}
+
+.style-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 20px 40px -15px hsl(var(--primary) / 0.3);
+}
+
+/* Upload zone styles */
+.upload-zone {
+  border: 2px dashed hsl(var(--border));
+  transition: all 0.3s ease;
+}
+
+.upload-zone:hover,
+.upload-zone.dragging {
+  border-color: hsl(var(--primary));
+  background-color: hsl(var(--primary) / 0.05);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.5);
 }
