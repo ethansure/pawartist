@@ -4,7 +4,12 @@ import { useState, useCallback } from "react";
 import Link from "next/link";
 import { useDropzone } from "react-dropzone";
 
-// Features we offer
+// Real AI-generated example
+const realExample = {
+  before: "/examples/enhance-before.jpg",
+  after: "/examples/enhance-after.png",
+};
+
 const capabilities = [
   { icon: "📐", name: "4x Upscale", desc: "Increase resolution up to 4 times original" },
   { icon: "🔇", name: "Noise Reduction", desc: "Remove grain and compression artifacts" },
@@ -99,14 +104,26 @@ export default function PhotoEnhancePage() {
               </div>
             </div>
             
-            <div className="space-y-4">
+            {/* Real Before/After */}
+            <div className="bg-white/5 rounded-2xl p-4 border border-white/10 mb-6">
+              <p className="text-sm text-purple-400 mb-3 text-center">✨ Real 4x Upscale Result</p>
+              <div className="flex items-center gap-4">
+                <div className="flex-1">
+                  <p className="text-xs text-gray-500 mb-1 text-center">256px (Low Res)</p>
+                  <img src={realExample.before} alt="Before" className="w-full aspect-square object-cover rounded-xl pixelated" style={{imageRendering: 'pixelated'}} />
+                </div>
+                <div className="text-2xl">→</div>
+                <div className="flex-1">
+                  <p className="text-xs text-gray-500 mb-1 text-center">1024px (4x HD)</p>
+                  <img src={realExample.after} alt="After" className="w-full aspect-square object-cover rounded-xl" />
+                </div>
+              </div>
+            </div>
+            <div className="grid grid-cols-3 gap-3">
               {capabilities.map((cap, i) => (
-                <div key={i} className="flex items-center gap-4 bg-white/5 rounded-2xl p-4 border border-white/10">
-                  <div className="w-16 h-16 rounded-xl bg-purple-500/20 flex items-center justify-center text-3xl">{cap.icon}</div>
-                  <div>
-                    <div className="font-semibold">{cap.name}</div>
-                    <div className="text-sm text-gray-400">{cap.desc}</div>
-                  </div>
+                <div key={i} className="text-center bg-white/5 rounded-xl p-4 border border-white/10">
+                  <div className="text-2xl mb-2">{cap.icon}</div>
+                  <div className="font-medium text-sm">{cap.name}</div>
                 </div>
               ))}
             </div>

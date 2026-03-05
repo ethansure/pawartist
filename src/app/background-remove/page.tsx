@@ -4,11 +4,11 @@ import { useState, useCallback } from "react";
 import Link from "next/link";
 import { useDropzone } from "react-dropzone";
 
-const examples = [
-  { before: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400", after: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400" },
-  { before: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400", after: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400" },
-  { before: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400", after: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400" },
-];
+// Real AI-generated example
+const realExample = {
+  before: "/examples/bg-remove-before.jpg",
+  after: "/examples/bg-remove-after.png",
+};
 
 const bgOptions = [
   { id: "transparent", name: "Transparent", preview: "🔲" },
@@ -108,12 +108,20 @@ export default function BackgroundRemovePage() {
               </div>
             </div>
             
-            <div className="grid grid-cols-3 gap-4">
-              {examples.map((ex, i) => (
-                <div key={i} className="relative aspect-square rounded-2xl overflow-hidden border border-white/10" style={{ background: "repeating-conic-gradient(#1a1a1a 0% 25%, #0a0a0a 0% 50%) 50%/20px 20px" }}>
-                  <img src={ex.after} alt="Example" className="w-full h-full object-cover" style={{ mixBlendMode: "multiply" }} />
+            {/* Real Before/After */}
+            <div className="bg-white/5 rounded-2xl p-4 border border-white/10">
+              <p className="text-sm text-green-400 mb-3 text-center">✨ Real AI Result</p>
+              <div className="flex items-center gap-4">
+                <div className="flex-1">
+                  <p className="text-xs text-gray-500 mb-1 text-center">Original</p>
+                  <img src={realExample.before} alt="Before" className="w-full aspect-square object-cover rounded-xl" />
                 </div>
-              ))}
+                <div className="text-2xl">→</div>
+                <div className="flex-1 rounded-xl overflow-hidden" style={{ background: "repeating-conic-gradient(#333 0% 25%, #111 0% 50%) 50%/15px 15px" }}>
+                  <p className="text-xs text-gray-500 mb-1 text-center bg-black/50 py-1">Removed</p>
+                  <img src={realExample.after} alt="After" className="w-full aspect-square object-contain" />
+                </div>
+              </div>
             </div>
           </div>
         </section>

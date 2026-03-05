@@ -19,12 +19,12 @@ const styles = [
   { id: "abstract", name: "Abstract", emoji: "🎨", desc: "Modern abstract" },
 ];
 
-// Style examples - real art style images (not fake before/after)
-const styleExamples = [
-  { style: "Van Gogh", emoji: "🌻", image: "https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?w=400", desc: "Swirling brushstrokes" },
-  { style: "Impressionist", emoji: "🌸", image: "https://images.unsplash.com/photo-1549490349-8643362247b5?w=400", desc: "Light & color focus" },
-  { style: "Abstract", emoji: "🎨", image: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=400", desc: "Bold shapes & colors" },
-];
+// Real AI-generated example
+const realExample = {
+  before: "/examples/style-before.jpg",
+  after: "/examples/style-after.png",
+  style: "Van Gogh",
+};
 
 export default function StyleTransferPage() {
   const [mode, setMode] = useState<"landing" | "create">("landing");
@@ -111,16 +111,20 @@ export default function StyleTransferPage() {
               </div>
             </div>
             
-            <div className="grid grid-cols-3 gap-4">
-              {styleExamples.map((ex, i) => (
-                <div key={i} className="bg-white/5 rounded-2xl overflow-hidden border border-white/10">
-                  <img src={ex.image} alt={ex.style} className="w-full aspect-square object-cover" />
-                  <div className="p-3 text-center">
-                    <span className="text-lg">{ex.emoji}</span>
-                    <div className="font-medium text-sm">{ex.style}</div>
-                  </div>
+            {/* Real Before/After */}
+            <div className="bg-white/5 rounded-2xl p-4 border border-white/10">
+              <p className="text-sm text-rose-400 mb-3 text-center">✨ Real {realExample.style} Transformation</p>
+              <div className="flex items-center gap-4">
+                <div className="flex-1">
+                  <p className="text-xs text-gray-500 mb-1 text-center">Original Photo</p>
+                  <img src={realExample.before} alt="Before" className="w-full aspect-square object-cover rounded-xl" />
                 </div>
-              ))}
+                <div className="text-2xl">→</div>
+                <div className="flex-1">
+                  <p className="text-xs text-gray-500 mb-1 text-center">{realExample.style} Style</p>
+                  <img src={realExample.after} alt="After" className="w-full aspect-square object-cover rounded-xl" />
+                </div>
+              </div>
             </div>
           </div>
         </section>

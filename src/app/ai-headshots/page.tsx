@@ -13,12 +13,12 @@ const styles = [
   { id: "actor", name: "Actor", icon: "🎭", desc: "Entertainment industry" },
 ];
 
-// Professional headshot examples (real professional photos, not fake transformations)
-const headshotExamples = [
-  { image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400", style: "Corporate", desc: "Formal business" },
-  { image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400", style: "LinkedIn", desc: "Professional networking" },
-  { image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400", style: "Creative", desc: "Modern approachable" },
-];
+// Real AI-generated example
+const realExample = {
+  before: "/examples/headshot-before.jpg",
+  after: "/examples/headshot-after.png",
+  style: "Corporate",
+};
 
 export default function AIHeadshotsPage() {
   const [mode, setMode] = useState<"landing" | "create">("landing");
@@ -113,16 +113,20 @@ export default function AIHeadshotsPage() {
               </div>
             </div>
             
-            <div className="grid grid-cols-3 gap-4">
-              {headshotExamples.map((ex, i) => (
-                <div key={i} className="bg-white/5 rounded-2xl overflow-hidden border border-white/10 text-center">
-                  <img src={ex.image} alt={ex.style} className="w-full aspect-square object-cover" />
-                  <div className="p-3">
-                    <div className="font-medium">{ex.style}</div>
-                    <div className="text-xs text-gray-500">{ex.desc}</div>
-                  </div>
+            {/* Real Before/After */}
+            <div className="bg-white/5 rounded-2xl p-4 border border-white/10">
+              <p className="text-sm text-slate-300 mb-3 text-center">✨ Real AI Headshot Result</p>
+              <div className="flex items-center gap-4">
+                <div className="flex-1">
+                  <p className="text-xs text-gray-500 mb-1 text-center">Casual Selfie</p>
+                  <img src={realExample.before} alt="Before" className="w-full aspect-square object-cover rounded-xl" />
                 </div>
-              ))}
+                <div className="text-2xl">→</div>
+                <div className="flex-1">
+                  <p className="text-xs text-gray-500 mb-1 text-center">Professional</p>
+                  <img src={realExample.after} alt="After" className="w-full aspect-square object-cover rounded-xl ring-2 ring-slate-500" />
+                </div>
+              </div>
             </div>
           </div>
         </section>
