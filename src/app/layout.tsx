@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://ai-photo-tool.vercel.app"),
+  metadataBase: new URL("https://aiphotos.icu"),
   title: {
     default: "AI Photo Tools - Pet Portraits, Photo Restoration & Enhancement",
     template: "%s | AI Photo Tools",
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://ai-photo-tool.vercel.app",
+    url: "https://aiphotos.icu",
     siteName: "AI Photo Tools",
     title: "AI Photo Tools - Transform Your Photos with AI Magic",
     description:
