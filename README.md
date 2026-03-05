@@ -1,36 +1,142 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🐾 PetPortraitAI
 
-## Getting Started
+Transform your beloved pets into stunning AI-generated art! Choose from 50+ artistic styles including royal portraits, Disney/Pixar, Van Gogh, and more.
 
-First, run the development server:
+![PetPortraitAI](https://images.unsplash.com/photo-1558788353-f76d92427f16?w=1200)
 
+## ✨ Features
+
+- **50+ Art Styles** - Royal portraits, Disney/Pixar, oil paintings, watercolor, anime, and more
+- **AI-Powered** - Advanced AI transforms your pet photos in seconds
+- **Multiple Variations** - Get 4 unique variations per style
+- **HD Downloads** - High-resolution downloads for printing
+- **Mobile-First** - Beautiful responsive design
+- **SEO Optimized** - Built for search engines
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/yourusername/petportraitai.git
+cd petportraitai
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Set up environment variables:
+```bash
+cp .env.example .env.local
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Configure your API keys in `.env.local`:
+```env
+# Optional - enables real AI generation
+REPLICATE_API_TOKEN=your_replicate_token
 
-## Learn More
+# Optional - enables payments
+STRIPE_SECRET_KEY=your_stripe_secret
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_public
+```
 
-To learn more about Next.js, take a look at the following resources:
+5. Run the development server:
+```bash
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+6. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🛠 Tech Stack
 
-## Deploy on Vercel
+- **Framework:** Next.js 14 (App Router)
+- **Styling:** Tailwind CSS + shadcn/ui
+- **AI Generation:** Replicate API (SDXL/Flux)
+- **Payments:** Stripe
+- **Deployment:** Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📁 Project Structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/
+├── app/
+│   ├── api/
+│   │   ├── generate/    # AI generation endpoint
+│   │   └── checkout/    # Stripe checkout
+│   ├── blog/            # SEO blog pages
+│   ├── create/          # Portrait creation flow
+│   └── page.tsx         # Landing page
+├── components/
+│   ├── landing/         # Landing page sections
+│   ├── layout/          # Header, footer
+│   ├── results/         # Results gallery
+│   ├── ui/              # shadcn components
+│   └── upload/          # Upload flow components
+└── lib/
+    ├── styles.ts        # Art style definitions
+    └── utils.ts         # Utilities
+```
+
+## 🎨 Art Styles
+
+| Category | Styles |
+|----------|--------|
+| Classic & Royal | Royal Portrait, Military General, Victorian Noble |
+| Modern Art | Pop Art, Minimalist, Geometric |
+| Cartoon | Disney/Pixar, Anime, Chibi |
+| Fine Art | Oil Painting, Watercolor, Van Gogh, Impressionist |
+| Fantasy | Wizard, Knight, Space Explorer, Superhero |
+| Seasonal | Christmas, Halloween, Beach, Spring Garden |
+
+## 🔧 Configuration
+
+### Replicate API
+
+1. Sign up at [replicate.com](https://replicate.com)
+2. Get your API token
+3. Add to `.env.local`: `REPLICATE_API_TOKEN=r8_xxx`
+
+### Stripe (Test Mode)
+
+1. Get keys from [Stripe Dashboard](https://dashboard.stripe.com/test/apikeys)
+2. Add to `.env.local`:
+   - `STRIPE_SECRET_KEY=sk_test_xxx`
+   - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_xxx`
+
+## 📦 Deployment
+
+### Deploy to Vercel
+
+1. Push to GitHub
+2. Import project in [Vercel](https://vercel.com)
+3. Add environment variables
+4. Deploy!
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yourusername/petportraitai)
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📄 License
+
+MIT License - see [LICENSE](LICENSE) for details.
+
+## 🙏 Acknowledgments
+
+- [Replicate](https://replicate.com) for AI models
+- [shadcn/ui](https://ui.shadcn.com) for beautiful components
+- [Unsplash](https://unsplash.com) for demo images
+- All the pet parents who inspired this project! 🐕🐱
+
+---
+
+Made with ❤️ for pet lovers everywhere
