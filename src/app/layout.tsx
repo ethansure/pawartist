@@ -1,71 +1,46 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "@/components/ui/sonner";
-import { Header } from "@/components/layout/header";
-import { Footer } from "@/components/layout/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://ai-photo-tool.vercel.app"),
   title: {
-    default: "PetPortraitAI - Transform Your Pet Into Stunning Art",
-    template: "%s | PetPortraitAI",
+    default: "AI Photo Tools - Pet Portraits, Photo Restoration & Enhancement",
+    template: "%s | AI Photo Tools",
   },
   description:
-    "Turn your beloved pet into a masterpiece! Create beautiful AI-generated pet portraits in 50+ artistic styles. Royal portraits, Disney-style, oil paintings, and more. Transform your furry friend in seconds.",
+    "Professional AI photo tools suite. Create stunning pet portraits, restore old photos, enhance image quality, remove backgrounds. Free to try!",
   keywords: [
-    "pet portrait",
-    "AI pet art",
-    "dog portrait",
-    "cat portrait",
-    "pet painting",
-    "custom pet art",
-    "AI art generator",
-    "pet memorial",
-    "pet gift",
-    "digital pet art",
+    "AI photo tools",
+    "pet portrait AI",
+    "photo restoration",
+    "photo enhancer",
+    "background remover",
+    "AI image editor",
+    "pet art generator",
+    "old photo repair",
   ],
-  authors: [{ name: "PetPortraitAI" }],
-  creator: "PetPortraitAI",
+  authors: [{ name: "AI Photo Tools" }],
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://petportraitai.com",
-    siteName: "PetPortraitAI",
-    title: "PetPortraitAI - Transform Your Pet Into Stunning Art",
+    url: "https://ai-photo-tool.vercel.app",
+    siteName: "AI Photo Tools",
+    title: "AI Photo Tools - Transform Your Photos with AI Magic",
     description:
-      "Create beautiful AI-generated pet portraits in 50+ artistic styles. Royal portraits, Disney-style, oil paintings, and more.",
-    images: [
-      {
-        url: "/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "PetPortraitAI - AI Pet Portrait Generator",
-      },
-    ],
+      "Professional AI photo tools for everyone. Pet portraits, restoration, enhancement & more.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "PetPortraitAI - Transform Your Pet Into Stunning Art",
+    title: "AI Photo Tools - Transform Your Photos with AI",
     description:
-      "Create beautiful AI-generated pet portraits in 50+ artistic styles.",
-    images: ["/og-image.jpg"],
-    creator: "@petportraitai",
+      "Professional AI photo tools. Pet portraits, restoration, enhancement & more.",
   },
   robots: {
     index: true,
     follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
-  verification: {
-    google: "your-google-verification-code",
   },
 };
 
@@ -76,20 +51,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#f97316" />
-      </head>
-      <body className={inter.className}>
-        <div className="flex min-h-screen flex-col">
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </div>
-        <Toaster position="bottom-right" richColors />
-      </body>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }
