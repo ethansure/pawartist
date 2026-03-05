@@ -36,13 +36,19 @@ export default function PetPortraitPage() {
   const [progress, setProgress] = useState(0);
   const [results, setResults] = useState<string[]>([]);
 
-  // Compress image if needed
-  const compressImage = async (file: File): Promise<File> => {
-    return new Promise((resolve) => {
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    const file = acceptedFiles[0];
+    if (!file) return;
+    
+    console.log("[Pet Portrait] File selected:", file.name, file.size, file.type);
+    
+    // For large files, compress using canvas
+    if (file.size > 2 * 1024 * 1024) {
+      toast.info("Optimizing large image...");
       const img = new Image();
       img.onload = () => {
         const canvas = document.createElement("canvas");
-        const maxSize = 1024; // Max 1024px
+        const maxSize = 1024;
         let { width, height } = img;
         
         if (width > maxSize || height > maxSize) {
@@ -62,34 +68,28 @@ export default function PetPortraitPage() {
         
         canvas.toBlob((blob) => {
           if (blob) {
-            resolve(new File([blob], file.name.replace(/\.[^.]+$/, ".jpg"), { type: "image/jpeg" }));
-          } else {
-            resolve(file);
+            const compressedFile = new File([blob], "pet-photo.jpg", { type: "image/jpeg" });
+            console.log("[Pet Portrait] Compressed:", file.size, "->", compressedFile.size);
+            setUploadedFile(compressedFile);
+            setUploadedImage(canvas.toDataURL("image/jpeg", 0.9));
+            toast.success("Image ready!");
           }
         }, "image/jpeg", 0.85);
+        
+        URL.revokeObjectURL(img.src);
+      };
+      img.onerror = () => {
+        console.error("[Pet Portrait] Failed to load image for compression");
+        toast.error("Failed to process image. Try a different file.");
       };
       img.src = URL.createObjectURL(file);
-    });
-  };
-
-  const onDrop = useCallback(async (acceptedFiles: File[]) => {
-    const file = acceptedFiles[0];
-    if (file) {
-      toast.info("Processing image...");
-      
-      // Compress large images
-      let processedFile = file;
-      if (file.size > 2 * 1024 * 1024) { // > 2MB
-        console.log("[Pet Portrait] Compressing large image:", file.size);
-        processedFile = await compressImage(file);
-        console.log("[Pet Portrait] Compressed to:", processedFile.size);
-        toast.success("Image optimized!");
-      }
-      
-      setUploadedFile(processedFile);
+    } else {
+      // Small file, use directly
+      setUploadedFile(file);
       const reader = new FileReader();
       reader.onload = () => setUploadedImage(reader.result as string);
-      reader.readAsDataURL(processedFile);
+      reader.onerror = () => toast.error("Failed to read file");
+      reader.readAsDataURL(file);
     }
   }, []);
 
