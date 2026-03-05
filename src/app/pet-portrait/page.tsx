@@ -4,19 +4,26 @@ import { useState, useCallback } from "react";
 import Link from "next/link";
 import { useDropzone } from "react-dropzone";
 
+// Real AI-generated examples
+const realExamples = [
+  { style: "Royal Portrait", before: "/examples/pet-original.jpg", after: "/examples/pet-royal-real.png" },
+  { style: "Disney Pixar", before: "/examples/pet-original.jpg", after: "/examples/pet-disney-real.png" },
+  { style: "Oil Painting", before: "/examples/pet-original.jpg", after: "/examples/pet-oil-real.png" },
+];
+
 const artStyles = [
-  { id: "royal", name: "Royal Portrait", emoji: "👑", preview: "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=300" },
-  { id: "disney", name: "Disney Pixar", emoji: "✨", preview: "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=300" },
-  { id: "oil", name: "Oil Painting", emoji: "🎨", preview: "https://images.unsplash.com/photo-1579783901586-d88db74b4fe4?w=300" },
-  { id: "watercolor", name: "Watercolor", emoji: "💧", preview: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=300" },
-  { id: "anime", name: "Anime", emoji: "🌸", preview: "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=300" },
-  { id: "popart", name: "Pop Art", emoji: "🔴", preview: "https://images.unsplash.com/photo-1561214115-f2f134cc4912?w=300" },
-  { id: "renaissance", name: "Renaissance", emoji: "🏛️", preview: "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=300" },
-  { id: "cartoon", name: "Cartoon", emoji: "🎬", preview: "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=300" },
-  { id: "fantasy", name: "Fantasy", emoji: "⚔️", preview: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=300" },
-  { id: "space", name: "Space", emoji: "🚀", preview: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=300" },
-  { id: "vangogh", name: "Van Gogh", emoji: "🌻", preview: "https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?w=300" },
-  { id: "sketch", name: "Sketch", emoji: "✏️", preview: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=300" },
+  { id: "royal", name: "Royal Portrait", emoji: "👑", preview: "/examples/pet-royal-real.png" },
+  { id: "disney", name: "Disney Pixar", emoji: "✨", preview: "/examples/pet-disney-real.png" },
+  { id: "oil", name: "Oil Painting", emoji: "🎨", preview: "/examples/pet-oil-real.png" },
+  { id: "watercolor", name: "Watercolor", emoji: "💧", preview: "/examples/pet-royal.png" },
+  { id: "anime", name: "Anime", emoji: "🌸", preview: "/examples/pet-disney.png" },
+  { id: "popart", name: "Pop Art", emoji: "🔴", preview: "/examples/pet-oil.png" },
+  { id: "renaissance", name: "Renaissance", emoji: "🏛️", preview: "/examples/pet-royal-real.png" },
+  { id: "cartoon", name: "Cartoon", emoji: "🎬", preview: "/examples/pet-disney-real.png" },
+  { id: "fantasy", name: "Fantasy", emoji: "⚔️", preview: "/examples/pet-royal.png" },
+  { id: "space", name: "Space", emoji: "🚀", preview: "/examples/pet-disney.png" },
+  { id: "vangogh", name: "Van Gogh", emoji: "🌻", preview: "/examples/pet-oil-real.png" },
+  { id: "sketch", name: "Sketch", emoji: "✏️", preview: "/examples/pet-oil.png" },
 ];
 
 export default function PetPortraitPage() {
@@ -245,9 +252,32 @@ export default function PetPortraitPage() {
             </div>
           </div>
 
+          {/* Real Before/After Examples */}
+          <div className="mt-20">
+            <h2 className="text-2xl font-bold text-center mb-4">Real AI Transformations</h2>
+            <p className="text-gray-400 text-center mb-8">Same dog, different art styles</p>
+            <div className="grid md:grid-cols-3 gap-6">
+              {realExamples.map((ex, i) => (
+                <div key={i} className="bg-white/5 rounded-2xl p-4 border border-white/10">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="flex-1">
+                      <p className="text-xs text-gray-500 mb-1">Original</p>
+                      <img src={ex.before} alt="Before" className="w-full aspect-square object-cover rounded-xl" />
+                    </div>
+                    <div className="text-xl">→</div>
+                    <div className="flex-1">
+                      <p className="text-xs text-gray-500 mb-1">{ex.style}</p>
+                      <img src={ex.after} alt="After" className="w-full aspect-square object-cover rounded-xl" />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          
           {/* Style Preview */}
           <div className="mt-20">
-            <h2 className="text-2xl font-bold text-center mb-8">Available Art Styles</h2>
+            <h2 className="text-2xl font-bold text-center mb-8">All Art Styles</h2>
             <div className="grid grid-cols-4 md:grid-cols-6 gap-4">
               {artStyles.slice(0, 6).map(style => (
                 <div key={style.id} className="text-center">
