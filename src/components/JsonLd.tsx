@@ -104,3 +104,114 @@ export function FAQJsonLd({
     />
   );
 }
+
+export function BreadcrumbJsonLd({
+  items
+}: {
+  items: Array<{ name: string; url: string }>;
+}) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": items.map((item, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "name": item.name,
+      "item": item.url
+    }))
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+}
+
+export function HowToJsonLd({
+  name,
+  description,
+  steps,
+  image,
+  totalTime
+}: {
+  name: string;
+  description: string;
+  steps: Array<{ name: string; text: string; image?: string }>;
+  image?: string;
+  totalTime?: string;
+}) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": name,
+    "description": description,
+    ...(image && { "image": image }),
+    ...(totalTime && { "totalTime": totalTime }),
+    "step": steps.map((step, index) => ({
+      "@type": "HowToStep",
+      "position": index + 1,
+      "name": step.name,
+      "text": step.text,
+      ...(step.image && { "image": step.image })
+    }))
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+}
+
+export function ProductJsonLd({
+  name,
+  description,
+  image,
+  url,
+  rating,
+  reviewCount
+}: {
+  name: string;
+  description: string;
+  image: string;
+  url: string;
+  rating?: number;
+  reviewCount?: number;
+}) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": name,
+    "description": description,
+    "image": image,
+    "url": url,
+    "brand": {
+      "@type": "Brand",
+      "name": "AI Photo Tools"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock"
+    },
+    ...(rating && reviewCount && {
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": rating,
+        "reviewCount": reviewCount,
+        "bestRating": "5"
+      }
+    })
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+}
